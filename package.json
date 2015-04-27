@@ -19,6 +19,7 @@
   "dependencies": {
     "async": "0.9.0",
     "commander": "2.8.0",
-    "request": "2.55.0"
+    "request": "2.55.0",
+    "twitter": "1.2.5"
   }
 }
