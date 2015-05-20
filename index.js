@@ -14,20 +14,35 @@ program
   .option("-c, --consumer_key [value]", "Twitter API 'consumer_key'")
   .option("-s, --consumer_secret [value]", "Twitter API 'consumer_secret'")
   .option("-a, --access_token_key [value]", "Twitter API 'access_token_key'")
-  .option("-t, --access_token_secret [value]", "Twitter API 'access_token_secret'")
+  .option("-t, --access_token_secret [value]",
+    "Twitter API 'access_token_secret'")
   .action(function (options) {
+
+    function hasNull (obj) {
+      for (var item in obj) {
+        if (typeof obj[item] === 'undefined' || typeof obj[item] === null)
+          return true;
+      }
+      return false;
+    };
+
     var data = {
       "consumer_key": options.consumer_key,
       "consumer_secret": options.consumer_secret,
       "access_token_key": options.access_token_key,
       "access_token_secret": options.access_token_secret
     };
+
+    if (hasNull(data)) return console.log('All options are required!');
+
+    data = JSON.stringify(data);
     fs.exists('./config.json', function (exists) {
       if (exists) fs.unlinkSync('./config.json');
-      fs.writeFile('./config.json', JSON.stringify(data), function (error) {
+      fs.writeFile('./config.json', data, function (error) {
         if (error) console.log(error);
       });
-    })
+    });
+
   })
 ;
 
