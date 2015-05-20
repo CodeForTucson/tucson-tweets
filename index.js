@@ -46,4 +46,13 @@ program
   })
 ;
 
+// Return Twitter.js client object
+function configure (callback) {
+  fs.readFile('./config.json', function (error, data) {
+    if (error) callback(error);
+    else callback(null, new Twitter(JSON.parse(data)));
+  });
+}
+
+
 program.parse(process.argv);
