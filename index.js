@@ -7,6 +7,14 @@ var async = require('async')
   , Twitter = require('twitter')
 ;
 
+// Return Twitter.js client object
+function configure (callback) {
+  fs.readFile('./config.json', function (error, data) {
+    if (error) callback(error);
+    else callback(null, new Twitter(JSON.parse(data)));
+  });
+}
+
 program
   .version('0.0.1-dev')
   .command('configure')
@@ -44,15 +52,15 @@ program
     });
 
   })
+  .command('geosearch')
+  .description('GET recent tweets within Tucson, AZ bounding box')
+  .action(function () {
+    configure(function (error, client) {
+      if (error) return console.log(error);
+      client.get('')
+    })
+  })
 ;
-
-// Return Twitter.js client object
-function configure (callback) {
-  fs.readFile('./config.json', function (error, data) {
-    if (error) callback(error);
-    else callback(null, new Twitter(JSON.parse(data)));
-  });
-}
 
 
 program.parse(process.argv);
